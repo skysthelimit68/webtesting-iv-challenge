@@ -6,7 +6,6 @@ describe('test database', () => {
         await db('users').truncate();
     })
 
-
     it('should set environment to testing', () => {
         expect(process.env.DB_ENV).toBe('testing');
     })
@@ -21,7 +20,6 @@ describe('test database', () => {
         it('should have the right user', async () => {
             let user = {username: "test3", password:"1234"}
             let inserted = await insert(user)
-
             expect(inserted.name).toBe(user.name);
         })
     })
@@ -43,6 +41,25 @@ describe('test database', () => {
             await insert({username: "test6", password:"1234"})
             const users = await getAll();
             expect(users.length).toBe(2);
+        })
+    })
+
+    describe('findById()', () => {
+        it('should return the correct user', async() => {
+            await insert({username: "test5", password:"1234"})
+            const user = await insert({username: "test6", password:"1234"})
+
+            const result = await findById(2)
+            expect(user.username).toBe(result.username)
+        })
+    })
+
+    describe('update()', () => {
+        it('should return the updated user', async() => {
+            await insert({username: "test5", password:"1234"})
+            const changes = ({username: "test6", password:"1234"})
+            const result = await update(1, changes)
+            expect(result.username).toBe(changes.username);
         })
     })
 })

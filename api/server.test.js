@@ -16,15 +16,42 @@ describe('server', () => {
             .expect(201)
             .expect('Content-Type', /json/i, done)
         }) 
-    it('responds with 200 OK - get - root', () => {
+
+    it('respond with 200 OK - get - root', () => {
         return supertest(server)
         .get('/')
         .expect(200)
+        .expect('Content-Type', /json/i)
+    })
+
+    it('respond with 200 - get - getById', () => {
+            supertest(server)
+            .get('/1')
+            .expect(200)
+            .expect('Content-Type', /json/i)
+        })
+
+    it('respond with 200 - put - update user', () => {
+        supertest(server)
+        .put('/1')
+        .send({username: "test12345", password: "1234"})
+        .expect(200)
+        .expect('Content-Type', /json/i)
+    })    
+
+    it('respond with 200 - get - get all users', () => {
+        supertest(server)
+        .get('/users')
+        .expect(200)
+        .expect('Content-Type', /json/i)
     })
 
     it('respond with 200 - delete - remove user', () => {
         supertest(server)
         .delete('/1')
         .expect(200)
+        .expect('Content-Type', /json/i)
     })
+
+   
 })
